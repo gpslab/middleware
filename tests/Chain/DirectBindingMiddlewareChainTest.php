@@ -10,26 +10,19 @@
 
 namespace GpsLab\Component\Middleware\Tests\Chain;
 
-use GpsLab\Component\Middleware\Chain\ContainerMiddlewareChain;
+use GpsLab\Component\Middleware\Chain\DirectBindingMiddlewareChain;
 use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
-use Psr\Container\ContainerInterface;
 
-class ContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
+class DirectBindingMiddlewareChainTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var ContainerMiddlewareChain
+     * @var DirectBindingMiddlewareChain
      */
     private $chain;
 
     protected function setUp()
     {
-        $this->container = $this->getMock(ContainerInterface::class);
-        $this->chain = new ContainerMiddlewareChain($this->container);
+        $this->chain = new DirectBindingMiddlewareChain();
     }
 
     public function testRun()
@@ -38,7 +31,7 @@ class ContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
         $result1 = 'bar';
         $result2 = 'baz';
 
-        $some_service = new \stdClass();
+        /* @var $handler1 \PHPUnit_Framework_MockObject_MockObject|MiddlewareHandler */
         $handler1 = $this->getMock(MiddlewareHandler::class);
         $handler1
             ->expects($this->once())
@@ -50,6 +43,7 @@ class ContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
             }))
         ;
 
+        /* @var $handler2 \PHPUnit_Framework_MockObject_MockObject|MiddlewareHandler */
         $handler2 = $this->getMock(MiddlewareHandler::class);
         $handler2
             ->expects($this->once())
@@ -61,34 +55,14 @@ class ContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
             }))
         ;
 
-        $this->container
-            ->expects($this->at(0))
-            ->method('get')
-            ->with('handler1')
-            ->will($this->returnValue($handler1))
-        ;
-        $this->container
-            ->expects($this->at(1))
-            ->method('get')
-            ->with('handler2')
-            ->will($this->returnValue($handler2))
-        ;
-        $this->container
-            ->expects($this->at(2))
-            ->method('get')
-            ->with('some_service')
-            ->will($this->returnValue($some_service))
-        ;
-
-        $this->chain->registerService('handler2');
-        $this->chain->registerService('handler1');
-        $this->chain->registerService('handler2'); // override service
-        $this->chain->registerService('some_service');
+        $this->chain->append($handler2);
+        $this->chain->append($handler1);
+        $this->chain->append($handler2); // override middleware
 
         $this->assertEquals($result2, $this->chain->run($message));
     }
 
-    public function testNoServices()
+    public function testNoMiddlewares()
     {
         $this->assertEquals('foo', $this->chain->run('foo'));
     }

@@ -44,8 +44,9 @@ class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
         $handler1
             ->expects($this->once())
             ->method('handle')
-            ->with($message)
-            ->will($this->returnCallback(function ($_message, callable $callable) use ($result1) {
+            ->will($this->returnCallback(function ($_message, callable $callable) use ($message, $result1) {
+                $this->assertEquals($message, $_message);
+
                 return $callable($result1);
             }))
         ;
@@ -54,8 +55,9 @@ class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
         $handler2
             ->expects($this->once())
             ->method('handle')
-            ->with($result1)
-            ->will($this->returnCallback(function ($_message, callable $callable) use ($result2) {
+            ->will($this->returnCallback(function ($_message, callable $callable) use ($result1, $result2) {
+                $this->assertEquals($result1, $_message);
+
                 return $callable($result2);
             }))
         ;
