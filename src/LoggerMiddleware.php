@@ -37,8 +37,11 @@ class LoggerMiddleware implements Middleware
     {
         switch (gettype($message)) {
             case 'object':
-                $class_parts = explode('\\', get_class($message));
-                $log_message = sprintf('Middleware handle a "%s".', end($class_parts));
+                $class_name = get_class($message);
+                $class_name = str_replace('_', '\\', $class_name);
+                $class_name = explode('\\', $class_name);
+                $log_message = sprintf('Middleware handle a "%s".', end($class_name));
+                // get public properties of object
                 $context = json_decode(json_encode($message), true);
                 break;
             case 'resource':
