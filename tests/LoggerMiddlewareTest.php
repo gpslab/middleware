@@ -31,6 +31,9 @@ class LoggerMiddlewareTest extends \PHPUnit_Framework_TestCase
         $this->middleware = new LoggerMiddleware($this->logger);
     }
 
+    /**
+     * @return array
+     */
     public function getMessages()
     {
         $resource = fopen(__FILE__, 'r');
