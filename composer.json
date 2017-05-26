@@ -4,6 +4,14 @@
     "type": "library",
     "homepage": "https://github.com/gpslab/middleware",
     "description": "TInfrastructure for use middleware in applications",
+    "keywords": [
+        "infrastructure",
+        "middleware",
+        "cqrs",
+        "psr-3",
+        "psr-11",
+        "symfony"
+    ],
     "autoload": {
         "psr-4": {
             "GpsLab\\Component\\Middleware\\": "src/"
