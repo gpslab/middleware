@@ -38,7 +38,7 @@ class InvalidMessageException extends ValidatorException
             break;
         }
 
-        parent::__construct($message, $previous, $code);
+        parent::__construct($message, $code, $previous);
     }
 
     /**
