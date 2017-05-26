@@ -16,7 +16,7 @@ use GpsLab\Component\Query\Query;
 
 class MiddlewareQueryDispatcherTest extends \PHPUnit_Framework_TestCase
 {
-    public function testHandle()
+    public function testDispatch()
     {
         $result = 'foo';
 

@@ -30,10 +30,10 @@ class MiddlewareDomainEventBus implements EventBusInterface
     private $chain;
 
     /**
-     * @param EventBusInterface $bus_publisher
      * @param MiddlewareChain   $chain
+     * @param EventBusInterface $bus_publisher
      */
-    public function __construct(EventBusInterface $bus_publisher, MiddlewareChain $chain)
+    public function __construct(MiddlewareChain $chain, EventBusInterface $bus_publisher)
     {
         $this->bus_publisher = $bus_publisher;
         $this->chain = $chain;
