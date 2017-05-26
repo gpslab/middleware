@@ -40,7 +40,7 @@ class DirectBindingMiddlewareChain implements MiddlewareChain
     /**
      * @param int $index
      *
-     * @return \Closure
+     * @return callable
      */
     private function call($index)
     {

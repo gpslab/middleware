@@ -43,6 +43,8 @@ class ContainerMiddlewareChain implements MiddlewareChain
         // move existing middleware to end of chain
         if ($index !== false) {
             unset($this->middleware_handler_ids[$index]);
+            // correct array indexes
+            $this->middleware_handler_ids = array_values($this->middleware_handler_ids);
         }
 
         $this->middleware_handler_ids[] = $service;
@@ -61,7 +63,7 @@ class ContainerMiddlewareChain implements MiddlewareChain
     /**
      * @param int $index
      *
-     * @return \Closure
+     * @return callable
      */
     private function call($index)
     {
