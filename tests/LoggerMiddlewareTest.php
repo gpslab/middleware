@@ -78,9 +78,9 @@ class LoggerMiddlewareTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getMessages
      *
-     * @param mixed $message
+     * @param mixed  $message
      * @param string $log_message
-     * @param array $context
+     * @param array  $context
      */
     public function testHandle($message, $log_message, array $context)
     {
@@ -88,6 +88,7 @@ class LoggerMiddlewareTest extends \PHPUnit_Framework_TestCase
 
         $next = function ($_message) use ($message, $result) {
             $this->assertEquals($message, $_message);
+
             return $result;
         };
 

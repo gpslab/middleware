@@ -40,6 +40,7 @@ class QueryMiddlewareTest extends \PHPUnit_Framework_TestCase
 
         $next = function ($_message) use ($message, $result) {
             $this->assertEquals($message, $_message);
+
             return $result;
         };
         $this->dispatcher
@@ -59,6 +60,7 @@ class QueryMiddlewareTest extends \PHPUnit_Framework_TestCase
 
         $next = function ($_message) use ($message, $result) {
             $this->assertEquals($message, $_message);
+
             return $result;
         };
 
