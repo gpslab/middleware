@@ -24,6 +24,15 @@ class DirectBindingMiddlewareChain implements MiddlewareChain
      */
     public function append(MiddlewareHandler $middleware)
     {
+        $index = array_search($middleware, $this->middlewares);
+
+        // move existing middleware to end of chain
+        if ($index !== false) {
+            unset($this->middlewares[$index]);
+            // correct array indexes
+            $this->middlewares = array_values($this->middlewares);
+        }
+
         $this->middlewares[] = $middleware;
     }
 
