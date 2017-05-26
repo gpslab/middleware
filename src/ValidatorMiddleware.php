@@ -8,12 +8,12 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Handler;
+namespace GpsLab\Component\Middleware;
 
-use GpsLab\Component\Middleware\Handler\Exception\InvalidMessageException;
+use GpsLab\Component\Middleware\Exception\InvalidMessageException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ValidatorMiddlewareHandler implements MiddlewareHandler
+class ValidatorMiddleware implements Middleware
 {
     /**
      * @var ValidatorInterface

@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\DomainEvent\Handler;
+namespace GpsLab\Component\Middleware\DomainEvent;
 
-use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
+use GpsLab\Component\Middleware\Middleware;
 use GpsLab\Domain\Event\Bus\EventBusInterface;
 use GpsLab\Domain\Event\EventInterface;
 
-class DomainEventMiddlewareHandler implements MiddlewareHandler
+class DomainEventMiddleware implements Middleware
 {
     /**
      * @var EventBusInterface

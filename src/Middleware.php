@@ -8,9 +8,9 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Handler;
+namespace GpsLab\Component\Middleware;
 
-interface MiddlewareHandler
+interface Middleware
 {
     /**
      * @param mixed    $message

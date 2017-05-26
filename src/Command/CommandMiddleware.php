@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Command\Handler;
+namespace GpsLab\Component\Middleware\Command;
 
 use GpsLab\Component\Command\Bus\CommandBus;
 use GpsLab\Component\Command\Command;
-use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
+use GpsLab\Component\Middleware\Middleware;
 
-class CommandMiddlewareHandler implements MiddlewareHandler
+class CommandMiddleware implements Middleware
 {
     /**
      * @var CommandBus

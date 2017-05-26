@@ -8,11 +8,11 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Handler;
+namespace GpsLab\Component\Middleware;
 
 use Psr\Log\LoggerInterface;
 
-class LoggerMiddlewareHandler implements MiddlewareHandler
+class LoggerMiddleware implements Middleware
 {
     /**
      * @var LoggerInterface

@@ -11,7 +11,7 @@
 namespace GpsLab\Component\Middleware\Tests\Chain;
 
 use GpsLab\Component\Middleware\Chain\SymfonyContainerMiddlewareChain;
-use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
+use GpsLab\Component\Middleware\Middleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
@@ -40,8 +40,8 @@ class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
         $result2 = 'baz';
 
         $some_service = new \stdClass();
-        $handler1 = $this->getMock(MiddlewareHandler::class);
-        $handler1
+        $middleware1 = $this->getMock(Middleware::class);
+        $middleware1
             ->expects($this->once())
             ->method('handle')
             ->will($this->returnCallback(function ($_message, callable $callable) use ($message, $result1) {
@@ -51,8 +51,8 @@ class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
             }))
         ;
 
-        $handler2 = $this->getMock(MiddlewareHandler::class);
-        $handler2
+        $middleware2 = $this->getMock(Middleware::class);
+        $middleware2
             ->expects($this->once())
             ->method('handle')
             ->will($this->returnCallback(function ($_message, callable $callable) use ($result1, $result2) {
@@ -65,14 +65,14 @@ class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
         $this->container
             ->expects($this->at(0))
             ->method('get')
-            ->with('handler1')
-            ->will($this->returnValue($handler1))
+            ->with('middleware1')
+            ->will($this->returnValue($middleware1))
         ;
         $this->container
             ->expects($this->at(1))
             ->method('get')
-            ->with('handler2')
-            ->will($this->returnValue($handler2))
+            ->with('middleware2')
+            ->will($this->returnValue($middleware2))
         ;
         $this->container
             ->expects($this->at(2))
@@ -81,9 +81,9 @@ class SymfonyContainerMiddlewareChainTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($some_service))
         ;
 
-        $this->chain->registerService('handler2');
-        $this->chain->registerService('handler1');
-        $this->chain->registerService('handler2'); // override service
+        $this->chain->registerService('middleware2');
+        $this->chain->registerService('middleware1');
+        $this->chain->registerService('middleware2'); // override service
         $this->chain->registerService('some_service');
 
         $this->assertEquals($result2, $this->chain->run($message));

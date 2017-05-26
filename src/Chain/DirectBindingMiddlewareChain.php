@@ -10,19 +10,19 @@
 
 namespace GpsLab\Component\Middleware\Chain;
 
-use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
+use GpsLab\Component\Middleware\Middleware;
 
 class DirectBindingMiddlewareChain implements MiddlewareChain
 {
     /**
-     * @var MiddlewareHandler[]
+     * @var Middleware[]
      */
     private $middlewares = [];
 
     /**
-     * @param MiddlewareHandler $middleware
+     * @param Middleware $middleware
      */
-    public function append(MiddlewareHandler $middleware)
+    public function append(Middleware $middleware)
     {
         $index = array_search($middleware, $this->middlewares);
 

@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Query\Handler;
+namespace GpsLab\Component\Middleware\Query;
 
-use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
+use GpsLab\Component\Middleware\Middleware;
 use GpsLab\Component\Query\Dispatcher\QueryDispatcher;
 use GpsLab\Component\Query\Query;
 
-class QueryMiddlewareHandler implements MiddlewareHandler
+class QueryMiddleware implements Middleware
 {
     /**
      * @var QueryDispatcher

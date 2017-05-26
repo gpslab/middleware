@@ -10,7 +10,7 @@
 
 namespace GpsLab\Component\Middleware\Chain;
 
-use GpsLab\Component\Middleware\Handler\MiddlewareHandler;
+use GpsLab\Component\Middleware\Middleware;
 use Psr\Container\ContainerInterface;
 
 class ContainerMiddlewareChain implements MiddlewareChain
@@ -23,7 +23,7 @@ class ContainerMiddlewareChain implements MiddlewareChain
     /**
      * @var string[]
      */
-    private $middleware_handler_ids = [];
+    private $middleware_ids = [];
 
     /**
      * @param ContainerInterface $container
@@ -38,16 +38,16 @@ class ContainerMiddlewareChain implements MiddlewareChain
      */
     public function registerService($service)
     {
-        $index = array_search($service, $this->middleware_handler_ids);
+        $index = array_search($service, $this->middleware_ids);
 
         // move existing middleware to end of chain
         if ($index !== false) {
-            unset($this->middleware_handler_ids[$index]);
+            unset($this->middleware_ids[$index]);
             // correct array indexes
-            $this->middleware_handler_ids = array_values($this->middleware_handler_ids);
+            $this->middleware_ids = array_values($this->middleware_ids);
         }
 
-        $this->middleware_handler_ids[] = $service;
+        $this->middleware_ids[] = $service;
     }
 
     /**
@@ -69,7 +69,7 @@ class ContainerMiddlewareChain implements MiddlewareChain
     {
         $middleware = $this->lazyLoad($index);
 
-        if (!($middleware instanceof MiddlewareHandler)) {
+        if (!($middleware instanceof Middleware)) {
             return function ($message) {
                 return $message;
             };
@@ -83,15 +83,15 @@ class ContainerMiddlewareChain implements MiddlewareChain
     /**
      * @param $index
      *
-     * @return MiddlewareHandler
+     * @return Middleware
      */
     private function lazyLoad($index)
     {
-        if (isset($this->middleware_handler_ids[$index])) {
-            $handler = $this->container->get($this->middleware_handler_ids[$index]);
+        if (isset($this->middleware_ids[$index])) {
+            $middleware = $this->container->get($this->middleware_ids[$index]);
 
-            if ($handler instanceof MiddlewareHandler) {
-                return $handler;
+            if ($middleware instanceof Middleware) {
+                return $middleware;
             }
         }
 
