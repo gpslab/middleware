@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Query\Dispatcher;
+namespace GpsLab\Component\Middleware\Query\Bus;
 
 use GpsLab\Component\Middleware\Chain\MiddlewareChain;
-use GpsLab\Component\Query\Dispatcher\QueryDispatcher;
+use GpsLab\Component\Query\Bus\QueryBus;
 use GpsLab\Component\Query\Query;
 
-class MiddlewareQueryDispatcher implements QueryDispatcher
+class MiddlewareQueryBus implements QueryBus
 {
     /**
      * @var MiddlewareChain
@@ -34,7 +34,7 @@ class MiddlewareQueryDispatcher implements QueryDispatcher
      *
      * @return mixed
      */
-    public function dispatch(Query $query)
+    public function handle(Query $query)
     {
         return $this->chain->run($query);
     }

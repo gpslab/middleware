@@ -11,15 +11,15 @@
 namespace GpsLab\Component\Middleware\Tests\Query;
 
 use GpsLab\Component\Middleware\Query\QueryMiddleware;
-use GpsLab\Component\Query\Dispatcher\QueryDispatcher;
+use GpsLab\Component\Query\Bus\QueryBus;
 use GpsLab\Component\Query\Query;
 
 class QueryMiddlewareTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|QueryDispatcher
+     * @var \PHPUnit_Framework_MockObject_MockObject|QueryBus
      */
-    private $dispatcher;
+    private $bus;
 
     /**
      * @var QueryMiddleware
@@ -28,8 +28,8 @@ class QueryMiddlewareTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = $this->getMock(QueryDispatcher::class);
-        $this->middleware = new QueryMiddleware($this->dispatcher);
+        $this->bus = $this->getMock(QueryBus::class);
+        $this->middleware = new QueryMiddleware($this->bus);
     }
 
     public function testHandleQuery()
@@ -43,9 +43,9 @@ class QueryMiddlewareTest extends \PHPUnit_Framework_TestCase
 
             return $result;
         };
-        $this->dispatcher
+        $this->bus
             ->expects($this->once())
-            ->method('dispatch')
+            ->method('handle')
             ->with($query)
             ->will($this->returnValue($message))
         ;

@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/MIT
  */
 
-namespace GpsLab\Component\Middleware\Tests\Query\Dispatcher;
+namespace GpsLab\Component\Middleware\Tests\Query\Bus;
 
 use GpsLab\Component\Middleware\Chain\MiddlewareChain;
-use GpsLab\Component\Middleware\Query\Dispatcher\MiddlewareQueryDispatcher;
+use GpsLab\Component\Middleware\Query\Bus\MiddlewareQueryBus;
 use GpsLab\Component\Query\Query;
 
-class MiddlewareQueryDispatcherTest extends \PHPUnit_Framework_TestCase
+class MiddlewareQueryBusTest extends \PHPUnit_Framework_TestCase
 {
     public function testDispatch()
     {
@@ -32,7 +32,7 @@ class MiddlewareQueryDispatcherTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($result))
         ;
 
-        $dispatcher = new MiddlewareQueryDispatcher($chain);
-        $this->assertEquals($result, $dispatcher->dispatch($query));
+        $dispatcher = new MiddlewareQueryBus($chain);
+        $this->assertEquals($result, $dispatcher->handle($query));
     }
 }

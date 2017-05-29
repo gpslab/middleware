@@ -11,22 +11,22 @@
 namespace GpsLab\Component\Middleware\Query;
 
 use GpsLab\Component\Middleware\Middleware;
-use GpsLab\Component\Query\Dispatcher\QueryDispatcher;
+use GpsLab\Component\Query\Bus\QueryBus;
 use GpsLab\Component\Query\Query;
 
 class QueryMiddleware implements Middleware
 {
     /**
-     * @var QueryDispatcher
+     * @var QueryBus
      */
-    private $dispatcher;
+    private $bus;
 
     /**
-     * @param QueryDispatcher $dispatcher
+     * @param QueryBus $bus
      */
-    public function __construct(QueryDispatcher $dispatcher)
+    public function __construct(QueryBus $bus)
     {
-        $this->dispatcher = $dispatcher;
+        $this->bus = $bus;
     }
 
     /**
@@ -38,7 +38,7 @@ class QueryMiddleware implements Middleware
     public function handle($message, callable $next)
     {
         if ($message instanceof Query) {
-            return $next($this->dispatcher->dispatch($message));
+            return $next($this->bus->handle($message));
         }
 
         return $next($message);
