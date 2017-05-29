@@ -19,8 +19,101 @@ Pretty simple with [Composer](http://packagist.org), run:
 composer require gpslab/middleware
 ```
 
-## Usage
+## Middleware chain
 
+`MiddlewareChain` contains a middlewares (`Middleware`) and sequentially apply them to the message by chain.
+
+There are 3 implementations of the chain, but you can make your own.
+
+* `DirectBindingMiddlewareChain` - direct binding;
+* `ContainerMiddlewareChain` - [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) container;
+* `SymfonyContainerMiddlewareChain` - Symfony container *(Symfony 3.3
+[implements](http://symfony.com/blog/new-in-symfony-3-3-psr-11-containers) a
+[PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md))*.
+
+## Handle command (CQRS)
+
+Example usage middleware for handle Commands in CQRS.
+
+```php
+// middleware chain
+$chain = new DirectBindingMiddlewareChain();
+
+// add logger middleware
+$chain->append(new LoggerMiddleware($logger));
+// add validator middleware
+$chain->append(new ValidatorMiddleware($validator));
+// add middleware for handle command from origin command bus
+$chain->append(new CommandMiddleware($command_bus));
+
+// configure command bus
+$bus = new MiddlewareCommandBus($chain);
+
+
+// handle command
+try {
+    $bus->handle($my_command);
+} catch(InvalidMessageException $e) {
+    // show validation errors
+    var_dump($e->getMessages());
+}
+```
+
+## Handle query (CQRS)
+
+Example usage middleware for handle Queries in CQRS.
+
+```php
+// middleware chain
+$chain = new DirectBindingMiddlewareChain();
+
+// add logger middleware
+$chain->append(new LoggerMiddleware($logger));
+// add validator middleware
+$chain->append(new ValidatorMiddleware($validator));
+// add middleware for handle query from origin query bus
+$chain->append(new QueryMiddleware($query_bus));
+
+// configure query bus
+$bus = new MiddlewareQueryBus($chain);
+
+
+// handle query
+try {
+    $bus->handle($my_query);
+} catch (InvalidMessageException $e) {
+    // show validation errors
+    var_dump($e->getMessages());
+}
+```
+
+## Handle Domain event
+
+Example usage middleware for handle Domain events.
+
+```php
+// middleware chain
+$chain = new DirectBindingMiddlewareChain();
+
+// add logger middleware
+$chain->append(new LoggerMiddleware($logger));
+// add validator middleware
+$chain->append(new ValidatorMiddleware($validator));
+// add middleware for handle event from origin domain event bus
+$chain->append(new DomainEventMiddleware($domain_event_bus));
+
+// configure domain event bus
+$bus = new MiddlewareDomainEventBus($chain);
+
+
+// handle domain event
+try {
+    $bus->handle($my_event);
+} catch (InvalidMessageException $e) {
+    // show validation errors
+    var_dump($e->getMessages());
+}
+```
 
 ## License
 
