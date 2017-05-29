@@ -35,27 +35,12 @@ class LoggerMiddleware implements Middleware
      */
     public function handle($message, callable $next)
     {
-        switch (gettype($message)) {
-            case 'object':
-                $class_name = get_class($message);
-                $class_name = str_replace('_', '\\', $class_name);
-                $class_name = explode('\\', $class_name);
-                $log_message = sprintf('Middleware handle a "%s".', end($class_name));
-                // get public properties of object
-                $context = json_decode(json_encode($message), true);
-                break;
-            case 'resource':
-                $log_message = 'Middleware handle a resource';
-                $context = ['type' => get_resource_type($message)];
-                break;
-            default:
-                $log_message = 'Middleware handle a message';
-                $context = ['message' => $message];
-                break;
-        }
+        $this->logger->debug('Started handling a message', ['message' => $message]);
 
-        $this->logger->debug($log_message, $context);
+        $result = $next($message);
 
-        return $next($message);
+        $this->logger->debug('Finished handling a message', ['message' => $message, 'result' => $result]);
+
+        return $result;
     }
 }
