@@ -33,7 +33,7 @@ There are 3 implementations of the chain, but you can make your own.
 
 ## Handle command (CQRS)
 
-Example usage middleware for handle Commands in CQRS.
+Example usage middleware for handle Commands in [CQRS](https://github.com/gpslab/cqrs).
 
 ```php
 // middleware chain
@@ -61,7 +61,7 @@ try {
 
 ## Handle query (CQRS)
 
-Example usage middleware for handle Queries in CQRS.
+Example usage middleware for handle Queries in [CQRS](https://github.com/gpslab/cqrs).
 
 ```php
 // middleware chain
@@ -89,7 +89,7 @@ try {
 
 ## Handle Domain event
 
-Example usage middleware for handle Domain events.
+Example usage middleware for handle [domain events](https://github.com/gpslab/domain-event).
 
 ```php
 // middleware chain
@@ -97,8 +97,6 @@ $chain = new DirectBindingMiddlewareChain();
 
 // add logger middleware
 $chain->append(new LoggerMiddleware($logger));
-// add validator middleware
-$chain->append(new ValidatorMiddleware($validator));
 // add middleware for handle event from origin domain event bus
 $chain->append(new DomainEventMiddleware($domain_event_bus));
 
@@ -106,13 +104,8 @@ $chain->append(new DomainEventMiddleware($domain_event_bus));
 $bus = new MiddlewareDomainEventBus($chain);
 
 
-// handle domain event
-try {
-    $bus->handle($my_event);
-} catch (InvalidMessageException $e) {
-    // show validation errors
-    var_dump($e->getMessages());
-}
+// publish domain event
+$bus->publish($my_event);
 ```
 
 ## License
