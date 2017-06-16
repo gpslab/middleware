@@ -27,6 +27,8 @@ matrix:
           env: SYMFONY_VERSION=2.8.*
         - php: 5.5
           env: SYMFONY_VERSION=3.0.*
+    allow_failures:
+        - php: hhvm
 
 before_install:
     - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ "$COVERAGE" != "1" ]; then phpenv config-rm xdebug.ini; fi;
