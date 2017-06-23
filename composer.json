@@ -30,7 +30,7 @@
         "psr/log": "~1.0",
         "symfony/dependency-injection": "~2.3|~3.0",
         "symfony/validator": "~2.3|~3.0",
-        "gpslab/cqrs": "dev-master",
+        "gpslab/cqrs": "~1.0",
         "gpslab/domain-event": "~1.6",
         "phpunit/phpunit": "~4.8",
         "scrutinizer/ocular": "~1.3",
