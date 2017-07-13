@@ -9,7 +9,7 @@
 
 # Infrastructure for use middleware in applications
 
-![Request delegate pipeline](request-delegate-pipeline.png)
+<p align="center"><img src="request-delegate-pipeline.png" alt="Request delegate pipeline"></p>
 
 ## Installation
 
