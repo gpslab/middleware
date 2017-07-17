@@ -13,16 +13,10 @@ namespace GpsLab\Component\Middleware\Tests\DomainEvent\Bus;
 use GpsLab\Component\Middleware\Chain\MiddlewareChain;
 use GpsLab\Component\Middleware\DomainEvent\Bus\MiddlewareDomainEventBus;
 use GpsLab\Domain\Event\Aggregator\AggregateEvents;
-use GpsLab\Domain\Event\Bus\EventBus;
 use GpsLab\Domain\Event\Event;
 
 class MiddlewareDomainEventBusTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventBus
-     */
-    private $event_bus;
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|MiddlewareChain
      */
@@ -35,9 +29,8 @@ class MiddlewareDomainEventBusTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->event_bus = $this->getMock(EventBus::class);
         $this->chain = $this->getMock(MiddlewareChain::class);
-        $this->bus = new MiddlewareDomainEventBus($this->chain, $this->event_bus);
+        $this->bus = new MiddlewareDomainEventBus($this->chain);
     }
 
     public function testPublish()

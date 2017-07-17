@@ -18,22 +18,15 @@ use GpsLab\Domain\Event\Event;
 class MiddlewareDomainEventBus implements EventBus
 {
     /**
-     * @var EventBus
-     */
-    private $bus_publisher;
-
-    /**
      * @var MiddlewareChain
      */
     private $chain;
 
     /**
      * @param MiddlewareChain $chain
-     * @param EventBus        $bus_publisher
      */
-    public function __construct(MiddlewareChain $chain, EventBus $bus_publisher)
+    public function __construct(MiddlewareChain $chain)
     {
-        $this->bus_publisher = $bus_publisher;
         $this->chain = $chain;
     }
 
