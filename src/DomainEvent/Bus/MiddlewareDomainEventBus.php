@@ -11,16 +11,14 @@
 namespace GpsLab\Component\Middleware\DomainEvent\Bus;
 
 use GpsLab\Component\Middleware\Chain\MiddlewareChain;
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\Bus\EventBusInterface;
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
-use GpsLab\Domain\Event\Listener\ListenerInterface;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
+use GpsLab\Domain\Event\Bus\EventBus;
+use GpsLab\Domain\Event\Event;
 
-class MiddlewareDomainEventBus implements EventBusInterface
+class MiddlewareDomainEventBus implements EventBus
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $bus_publisher;
 
@@ -30,41 +28,30 @@ class MiddlewareDomainEventBus implements EventBusInterface
     private $chain;
 
     /**
-     * @param MiddlewareChain   $chain
-     * @param EventBusInterface $bus_publisher
+     * @param MiddlewareChain $chain
+     * @param EventBus        $bus_publisher
      */
-    public function __construct(MiddlewareChain $chain, EventBusInterface $bus_publisher)
+    public function __construct(MiddlewareChain $chain, EventBus $bus_publisher)
     {
         $this->bus_publisher = $bus_publisher;
         $this->chain = $chain;
     }
 
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
-    public function publish(EventInterface $event)
+    public function publish(Event $event)
     {
         $this->chain->run($event);
     }
 
     /**
-     * @param AggregateEventsInterface $aggregator
+     * @param AggregateEvents $aggregator
      */
-    public function pullAndPublish(AggregateEventsInterface $aggregator)
+    public function pullAndPublish(AggregateEvents $aggregator)
     {
         foreach ($aggregator->pullEvents() as $event) {
             $this->publish($event);
         }
-    }
-
-    /**
-     * Get the list of every EventListener defined in the EventBus.
-     * This might be useful for debug.
-     *
-     * @return ListenerInterface[]|ListenerCollection
-     */
-    public function getRegisteredEventListeners()
-    {
-        return $this->bus_publisher->getRegisteredEventListeners();
     }
 }

@@ -11,20 +11,20 @@
 namespace GpsLab\Component\Middleware\DomainEvent;
 
 use GpsLab\Component\Middleware\Middleware;
-use GpsLab\Domain\Event\Bus\EventBusInterface;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Bus\EventBus;
+use GpsLab\Domain\Event\Event;
 
 class DomainEventMiddleware implements Middleware
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $bus;
 
     /**
-     * @param EventBusInterface $bus
+     * @param EventBus $bus
      */
-    public function __construct(EventBusInterface $bus)
+    public function __construct(EventBus $bus)
     {
         $this->bus = $bus;
     }
@@ -37,7 +37,7 @@ class DomainEventMiddleware implements Middleware
      */
     public function handle($message, callable $next)
     {
-        if ($message instanceof EventInterface) {
+        if ($message instanceof Event) {
             return $next($this->bus->publish($message));
         }
 
