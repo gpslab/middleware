@@ -12,15 +12,14 @@ namespace GpsLab\Component\Middleware\Tests\DomainEvent\Bus;
 
 use GpsLab\Component\Middleware\Chain\MiddlewareChain;
 use GpsLab\Component\Middleware\DomainEvent\Bus\MiddlewareDomainEventBus;
-use GpsLab\Domain\Event\Aggregator\AggregateEventsInterface;
-use GpsLab\Domain\Event\Bus\EventBusInterface;
-use GpsLab\Domain\Event\EventInterface;
-use GpsLab\Domain\Event\Listener\ListenerCollection;
+use GpsLab\Domain\Event\Aggregator\AggregateEvents;
+use GpsLab\Domain\Event\Bus\EventBus;
+use GpsLab\Domain\Event\Event;
 
 class MiddlewareDomainEventBusTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventBusInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventBus
      */
     private $event_bus;
 
@@ -36,15 +35,15 @@ class MiddlewareDomainEventBusTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->event_bus = $this->getMock(EventBusInterface::class);
+        $this->event_bus = $this->getMock(EventBus::class);
         $this->chain = $this->getMock(MiddlewareChain::class);
         $this->bus = new MiddlewareDomainEventBus($this->chain, $this->event_bus);
     }
 
     public function testPublish()
     {
-        /* @var $event \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event = $this->getMock(EventInterface::class);
+        /* @var $event \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event = $this->getMock(Event::class);
 
         $this->chain
             ->expects($this->once())
@@ -57,13 +56,13 @@ class MiddlewareDomainEventBusTest extends \PHPUnit_Framework_TestCase
 
     public function testPullAndPublish()
     {
-        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event1 = $this->getMock(EventInterface::class);
-        /* @var $even2t \PHPUnit_Framework_MockObject_MockObject|EventInterface */
-        $event2 = $this->getMock(EventInterface::class);
+        /* @var $event1 \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event1 = $this->getMock(Event::class);
+        /* @var $even2t \PHPUnit_Framework_MockObject_MockObject|Event */
+        $event2 = $this->getMock(Event::class);
 
-        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEventsInterface */
-        $aggregator = $this->getMock(AggregateEventsInterface::class);
+        /* @var $aggregator \PHPUnit_Framework_MockObject_MockObject|AggregateEvents */
+        $aggregator = $this->getMock(AggregateEvents::class);
         $aggregator
             ->expects($this->once())
             ->method('pullEvents')
@@ -85,18 +84,5 @@ class MiddlewareDomainEventBusTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->bus->pullAndPublish($aggregator);
-    }
-
-    public function testGetRegisteredEventListeners()
-    {
-        $listeners = $this->getMock(ListenerCollection::class);
-
-        $this->event_bus
-            ->expects($this->once())
-            ->method('getRegisteredEventListeners')
-            ->will($this->returnValue($listeners))
-        ;
-
-        $this->assertEquals($listeners, $this->bus->getRegisteredEventListeners());
     }
 }

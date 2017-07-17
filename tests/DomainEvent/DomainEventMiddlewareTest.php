@@ -11,13 +11,13 @@
 namespace GpsLab\Component\Middleware\Tests\DomainEvent;
 
 use GpsLab\Component\Middleware\DomainEvent\DomainEventMiddleware;
-use GpsLab\Domain\Event\Bus\EventBusInterface;
-use GpsLab\Domain\Event\EventInterface;
+use GpsLab\Domain\Event\Bus\EventBus;
+use GpsLab\Domain\Event\Event;
 
 class DomainEventMiddlewareTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EventBusInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EventBus
      */
     private $bus;
 
@@ -28,13 +28,13 @@ class DomainEventMiddlewareTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->bus = $this->getMock(EventBusInterface::class);
+        $this->bus = $this->getMock(EventBus::class);
         $this->middleware = new DomainEventMiddleware($this->bus);
     }
 
     public function testHandleCommand()
     {
-        $event = $this->getMock(EventInterface::class);
+        $event = $this->getMock(Event::class);
         $message = 'foo';
         $result = 'bar';
 
